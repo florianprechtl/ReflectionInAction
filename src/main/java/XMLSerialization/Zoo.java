@@ -1,3 +1,5 @@
+package XMLSerialization;
+
 public class Zoo {
 	public String city;
 	public String name;

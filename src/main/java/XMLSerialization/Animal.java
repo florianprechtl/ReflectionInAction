@@ -1,3 +1,5 @@
+package XMLSerialization;
+
 public class Animal {
 	public String name;
 	public String gender;

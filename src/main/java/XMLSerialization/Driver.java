@@ -1,3 +1,5 @@
+package XMLSerialization;
+
 import org.jdom.Document;
 import org.jdom.Element;
 

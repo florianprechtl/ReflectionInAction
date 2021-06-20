@@ -1,5 +1,7 @@
 package XMLSerialization;
 
+import java.io.File;
+import java.io.Writer;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
@@ -21,6 +23,10 @@ public class ZooTest {
 			XMLOutputter out = new XMLOutputter("\t",true);
 			Document d = Driver.serializeObject( national );
 			out.output(d, System.out);
+
+			File file = new File("zooXML");
+			FileHelper.createFile(file);
+			FileHelper.writeToFile(out.outputString(d) , file.getAbsolutePath());
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

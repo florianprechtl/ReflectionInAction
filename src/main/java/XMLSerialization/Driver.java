@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Driver {
 
-	public static Field[] getInstanceVariables(Class c) {
-		List accum = new LinkedList<>();
+	public static Field[] getInstanceVariables(Class<?> c) {
+		List<Field> accum = new LinkedList<>();
 		while(c != null) {
 			Field[] fields = c.getDeclaredFields();
 			for (Field field : fields) {
@@ -22,53 +22,53 @@ public class Driver {
 			c = c.getSuperclass();
 		}
 		Field[] result = new Field[accum.size()];
-		return (Field[]) accum.toArray(result);
+		return accum.toArray(result);
 	}
 
-	public static Document serializeObject(Object source)
+	public static Document serializeObject(Zoo source)
 		throws Exception
 	{
 		return serializeHelper( source,
 			new Document( new Element("serialized") ),
-			new IdentityHashMap() );
+			new IdentityHashMap<>() );
 	}
 	private static Document serializeHelper( Object source,
 											 Document target,
-											 Map table )
+											 Map<Object, String> table )
 		throws Exception
 	{
 		String id = Integer.toString( table.size() );
 		table.put( source, id );
-		Class sourceclass = source.getClass();
+		Class<?> sourceClass = source.getClass();
 		Element oElt = new Element("object");
-		oElt.setAttribute( "class", sourceclass.getName() );
+		oElt.setAttribute( "class", sourceClass.getName() );
 		oElt.setAttribute( "id", id );
 		target.getRootElement().addContent(oElt);
-		if ( !sourceclass.isArray() ) {
-			Field[] fields = getInstanceVariables(sourceclass);
-			for (int i=0; i<fields.length; i++) {
-				if ( !Modifier.isPublic(fields[i].getModifiers()) )
-					fields[i].setAccessible(true);
+		if ( !sourceClass.isArray() ) {
+			Field[] fields = getInstanceVariables(sourceClass);
+			for (Field field : fields) {
+				if (!Modifier.isPublic(field.getModifiers()))
+					field.setAccessible(true);
 				Element fElt = new Element("field");
-				fElt.setAttribute( "name", fields[i].getName() );
-				Class declClass = fields[i].getDeclaringClass();
-				fElt.setAttribute( "declaringclass",
-					declClass.getName() );
+				fElt.setAttribute("name", field.getName());
+				Class<?> declClass = field.getDeclaringClass();
+				fElt.setAttribute("declaringclass",
+						declClass.getName());
 
-				Class fieldtype = fields[i].getType();
-				Object child = fields[i].get(source);
+				Class<?> fieldType = field.getType();
+				Object child = field.get(source);
 
-				if ( Modifier.isTransient(fields[i].getModifiers()) ){
+				if (Modifier.isTransient(field.getModifiers())) {
 					child = null;
 				}
-				fElt.addContent( serializeVariable( fieldtype, child,
-					target, table));
+				fElt.addContent(serializeVariable(fieldType, child,
+						target, table));
 
 				oElt.addContent(fElt);
 			}
 		}
 		else {
-			Class componentType = sourceclass.getComponentType();
+			Class<?> componentType = sourceClass.getComponentType();
 
 			int length = Array.getLength(source);
 			oElt.setAttribute( "length", Integer.toString(length) );
@@ -82,16 +82,16 @@ public class Driver {
 		return target;
 	}
 
-	private static Element serializeVariable( Class fieldtype,
+	private static Element serializeVariable( Class<?> fieldType,
 											  Object child,
 											  Document target,
-											  Map table)
+											  Map<Object, String> table)
 		throws Exception
 	{
 		if (child == null) {
 			return new Element("null");
 		}
-		else if (!fieldtype.isPrimitive()) {
+		else if (!fieldType.isPrimitive()) {
 			Element reference = new Element("reference");
 			if (table.containsKey(child)) {
 				reference.setText(table.get(child).toString());

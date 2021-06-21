@@ -5,7 +5,10 @@ public class Zoo {
 	public String name;
 	public Animal[] animals;
 
-	public Zoo(String city, String name) {
+	public Zoo() {
+	}
+
+	public void initialize(String city, String name) {
 		this.city = city;
 		this.name = name;
 		animals = new Animal[0];

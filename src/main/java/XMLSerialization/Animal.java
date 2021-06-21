@@ -6,7 +6,10 @@ public class Animal {
 	public String classification;
 	public int weight;
 
-	public Animal(String name, String gender, String classification, int weight) {
+	public Animal() {
+	}
+
+	public void initialize(String name, String gender, String classification, int weight) {
 		this.name = name;
 		this.gender = gender;
 		this.classification = classification;

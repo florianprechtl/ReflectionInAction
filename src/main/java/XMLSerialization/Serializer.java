@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-public class Driver {
+public class Serializer {
 
 	public static Field[] getInstanceVariables(Class<?> c) {
 		List<Field> accum = new LinkedList<>();

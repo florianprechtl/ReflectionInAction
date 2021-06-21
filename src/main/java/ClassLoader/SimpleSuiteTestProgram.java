@@ -9,8 +9,9 @@ public class SimpleSuiteTestProgram {
 	public static void main(String[] args) {
 		try {
 			for (int i = 0; ; i++) {
-				ClassLoader aClassLoader
+				SimpleClassLoader aClassLoader
 						= new SimpleClassLoader("ClassLoader/Testcases");
+
 				Class<?> c = aClassLoader.loadClass("ClassLoader.Testcases.TestCase" + i);
 				Method m = null;
 				try {

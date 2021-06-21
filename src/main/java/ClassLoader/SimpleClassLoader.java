@@ -7,6 +7,7 @@ import java.io.IOException;
 public class SimpleClassLoader extends ClassLoader {
 	String[] dirs;
 
+	// ";" is the path separator
 	public SimpleClassLoader(String path) {
 		dirs = path.split(System.getProperty("path.separator"));
 	}

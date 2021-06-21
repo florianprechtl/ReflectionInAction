@@ -16,19 +16,45 @@ import org.jdom.output.XMLOutputter;
 
 public class Deserializer {
 
+	public static void main(String[] args) {
+		Animal panda1 = new Animal();
+		panda1.initialize("Tian Tian",
+				"male",
+				"Ailuropoda melanoleuca",
+				271);
+		Animal panda2 = new Animal();
+		panda2.initialize("Mei Xiang",
+				"female",
+				"Ailuropoda melanoleuca",
+				221);
+		Zoo national = new Zoo();
+		national.initialize("National Zoological Park",
+				"Washington, D.C.");
+		national.add(panda1);
+		national.add(panda2);
+		try {
+			XMLOutputter out = new XMLOutputter("\t", true);
+			Document d = Serializer.serializeObject(national);
+			out.output(d, System.out);
+
+			Object o = deserializeObject(d);
+			System.out.println(o);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	public static Object deserializeObject(Document source)
-			throws Exception
-	{
+			throws Exception {
 		List<? extends Element> objList = source.getRootElement().getChildren();
 		Map<String, Object> table = new HashMap<String, Object>();
-		createInstances( table, objList );
-		assignFieldValues( table, objList );
+		createInstances(table, objList);
+		assignFieldValues(table, objList);
 		return table.get("0");
 	}
 
 	private static void createInstances(Map<String, Object> table, List<? extends Element> objList)
-			throws Exception
-	{
+			throws Exception {
 		for (Element oElt : objList) {
 			Class<?> cls = Class.forName(oElt.getAttributeValue("class"));
 			Object instance = null;
@@ -37,7 +63,7 @@ public class Deserializer {
 				if (!Modifier.isPublic(c.getModifiers())) {
 					c.setAccessible(true);
 				}
-				instance = c.newInstance( );
+				instance = c.newInstance();
 			} else {
 				instance =
 						Array.newInstance(
@@ -49,8 +75,7 @@ public class Deserializer {
 	}
 
 	private static void assignFieldValues(Map<String, Object> table, List<? extends Element> objList)
-			throws Exception
-	{
+			throws Exception {
 		for (Element oElt : objList) {
 			Object instance = table.get(oElt.getAttributeValue("id"));
 			List<? extends Element> fElts = oElt.getChildren();
@@ -81,79 +106,39 @@ public class Deserializer {
 		}
 	}
 
-	private static Object deserializeValue( Element vElt,
+	private static Object deserializeValue(Element vElt,
 			Class<?> fieldType,
-			Map<String, Object> table )
-			throws ClassNotFoundException
-	{
+			Map<String, Object> table)
+			throws ClassNotFoundException {
 		String valType = vElt.getName();
 		if (valType.equals("null")) {
 			return null;
-		}
-		else if (valType.equals("reference")) {
+		} else if (valType.equals("reference")) {
 			return table.get(vElt.getText());
-		}
-		else {
+		} else {
 			if (fieldType.equals(boolean.class)) {
 				if (vElt.getText().equals("true")) {
 					return Boolean.TRUE;
-				}
-				else {
+				} else {
 					return Boolean.FALSE;
 				}
-			}
-			else if (fieldType.equals(byte.class)) {
+			} else if (fieldType.equals(byte.class)) {
 				return Byte.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(short.class)) {
+			} else if (fieldType.equals(short.class)) {
 				return Short.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(int.class)) {
+			} else if (fieldType.equals(int.class)) {
 				return Integer.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(long.class)) {
+			} else if (fieldType.equals(long.class)) {
 				return Long.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(float.class)) {
+			} else if (fieldType.equals(float.class)) {
 				return Float.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(double.class)) {
+			} else if (fieldType.equals(double.class)) {
 				return Double.valueOf(vElt.getText());
-			}
-			else if (fieldType.equals(char.class)) {
+			} else if (fieldType.equals(char.class)) {
 				return vElt.getText().charAt(0);
-			}
-			else {
+			} else {
 				return vElt.getText();
 			}
-		}
-	}
-
-	public static void main( String[] args ) {
-		Animal panda1 = new Animal();
-		panda1.initialize( "Tian Tian",
-				"male",
-				"Ailuropoda melanoleuca",
-				271 );
-		Animal panda2 = new Animal();
-		panda2.initialize( "Mei Xiang",
-				"female",
-				"Ailuropoda melanoleuca",
-				221 );
-		Zoo national = new Zoo();
-		national.initialize( "National Zoological Park",
-				"Washington, D.C." );
-		national.add( panda1 );
-		national.add( panda2 );
-		try {
-			XMLOutputter out = new XMLOutputter("\t", true);
-			Document d = Serializer.serializeObject(national);
-			out.output(d, System.out);
-
-			Object o = deserializeObject(d);
-			System.out.println(o);
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 }

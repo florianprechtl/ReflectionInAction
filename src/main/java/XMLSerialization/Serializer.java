@@ -1,5 +1,6 @@
 package XMLSerialization;
 
+import Mopex.Mopex;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,20 +13,7 @@ import org.jdom.Element;
 
 public class Serializer {
 
-	public static Field[] getInstanceVariables(Class<?> c) {
-		List<Field> accum = new LinkedList<>();
-		while (c != null) {
-			Field[] fields = c.getDeclaredFields();
-			for (Field field : fields) {
-				if (!Modifier.isStatic(field.getModifiers())) {
-					accum.add(field);
-				}
-			}
-			c = c.getSuperclass();
-		}
-		Field[] result = new Field[accum.size()];
-		return accum.toArray(result);
-	}
+
 
 	public static Document serializeObject(Zoo source)
 			throws Exception {
@@ -79,7 +67,7 @@ public class Serializer {
 	private static void serializeNonArrayContent(Object source, Document target, Map<Object, String> table,
 			Class<?> sourceClass,
 			Element oElt) throws Exception {
-		Field[] fields = getInstanceVariables(sourceClass);
+		Field[] fields = Mopex.getInstanceVariables(sourceClass);
 		for (Field field : fields) {
 			if (!Modifier.isPublic(field.getModifiers())) {
 				field.setAccessible(true);

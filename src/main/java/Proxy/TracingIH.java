@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 public class TracingIH implements InvocationHandler {
-	private Object target;
-	private PrintWriter out;
+	private final Object target;
+	private final PrintWriter out;
 	private TracingIH(Object obj, PrintWriter out) {
 		target = obj;
 		this.out = out;

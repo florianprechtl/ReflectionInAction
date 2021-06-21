@@ -9,4 +9,10 @@ public class Husky implements Dog {
 		this.name = name;
 		this.size = size;
 	}
+
+	@Override
+	public boolean retrieveStick() {
+		System.out.println("I retrieve the stick");
+		return Math.random() > 0.5;
+	}
 }

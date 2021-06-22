@@ -6,6 +6,7 @@ public class Main {
 	public static void main(String[] args) throws InvocationTargetException, IllegalAccessException {
 		TestHelloWorld();
 		TestC2ExtentManagedC();
+		TestC2IdentitySubclassOfC();
 	}
 
 	private static void TestHelloWorld() {
@@ -30,5 +31,11 @@ public class Main {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void TestC2IdentitySubclassOfC() {
+		C2IdentitySubclassOfC.main(new String[] {
+				"-package", "Test", "-output", "TestException", "java.lang.RuntimeException"
+		});
 	}
 }

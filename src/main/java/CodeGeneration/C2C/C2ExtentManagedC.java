@@ -47,9 +47,10 @@ public class C2ExtentManagedC extends C2CTransformation {
 
 	protected void checkAndProcessArgs(Args args) {
 		super.checkAndProcessArgs(args);
-		if (Serializable.class.isAssignableFrom(inputClassObject)) {
-			throw new C2CException("refuse Serializable input classes");
-		}
+		//TODO: Handle Serializable by overriding readObject
+//		if (Serializable.class.isAssignableFrom(inputClassObject)) {
+//			throw new C2CException("refuse Serializable input classes");
+//		}
 		if (Cloneable.class.isAssignableFrom(inputClassObject)) {
 			throw new C2CException("Cloneable and Singleton conflict");
 		}

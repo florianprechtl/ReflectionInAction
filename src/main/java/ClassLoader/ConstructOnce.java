@@ -1,10 +1,9 @@
 package ClassLoader;
 
 public class ConstructOnce {
-	static private boolean runOnce = false;
+	static private int runIndex = 0;
 	public ConstructOnce() {
-		if ( runOnce )
-			throw new IllegalStateException("run twice");
-		runOnce = true;
+		System.out.println(runIndex);
+		runIndex++;
 	}
 }

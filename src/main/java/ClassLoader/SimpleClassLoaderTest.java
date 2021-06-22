@@ -6,17 +6,13 @@ public class SimpleClassLoaderTest {
 			InstantiationException,
 			IllegalAccessException {
 		SimpleClassLoader firstClassLoader
-				= new SimpleClassLoader("ClassLoader/Testcases");
+				= new SimpleClassLoader("D:/Projekte/Java/ReflectionInAction/src/main/java");
 		Class c1 = firstClassLoader.loadClass("ClassLoader.ConstructOnce");
 		SimpleClassLoader secondClassLoader
-				= new SimpleClassLoader("ClassLoader/Testcases");
+				= new SimpleClassLoader("D:/Projekte/Java/ReflectionInAction/src/main/java");
 		Class c2 = secondClassLoader.loadClass("ClassLoader.ConstructOnce");
 		Object x = c1.newInstance();
-		try {
-			Object y = c1.newInstance();
-			throw new RuntimeException("Test fails");
-		} catch (IllegalStateException e) {
-		}
+		Object y = c1.newInstance();
 		Object z = c2.newInstance();
 	}
 }

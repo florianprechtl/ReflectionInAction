@@ -257,4 +257,17 @@ public class Mopex {
 		result += "}\n";
 		return result;
 	}
+
+	public static String headerSuffixToString(Method method) {
+		String result = "";
+
+		Class[] fpl = method.getParameterTypes();
+		String apl = Mopex.formalParametersToString(fpl);
+		Class returnType = method.getReturnType();
+		result += returnType + " "
+				+ method.getName()
+				+ "(" + apl + ")";
+
+		return result;
+	}
 }

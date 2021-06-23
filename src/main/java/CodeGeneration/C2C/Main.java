@@ -12,7 +12,7 @@ public class Main {
 	private static void TestHelloWorld() {
 		try {
 			HelloWorldConstructor.main(new String[] {
-					"-output", "HelloWorld"
+					"-output", "HelloWorld", "-package", "CodeGeneration.C2C"
 			});
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
@@ -24,7 +24,7 @@ public class Main {
 	private static void TestC2ExtentManagedC() {
 		try {
 			C2ExtentManagedC.main(new String[] {
-					"-output", "HelloWorld2", "HelloWorld"
+					"-package", "CodeGeneration.C2C", "CodeGeneration.C2C.HelloWorld"
 			});
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class Main {
 
 	private static void TestC2IdentitySubclassOfC() {
 		C2IdentitySubclassOfC.main(new String[] {
-				"-package", "Test", "-output", "TestException", "java.lang.RuntimeException"
+				"-package", "CodeGeneration.C2C", "java.lang.RuntimeException"
 		});
 	}
 }
